@@ -3,6 +3,7 @@ const button = document.querySelector('#userGridSize');
 const sketchSize = 400;
 let gridSize = 16; //set initial grid size
 let userInput;
+
 // add code to center the grid
 container.style.display = "flex";
 container.style.justifyContent = "center";
@@ -36,13 +37,25 @@ function createGrid(gridSize) {
         container.appendChild(cols);
         for (let j = 0; j < gridSize; j++){
             const rows = document.createElement('div');
+            let onceTracker = true;
+            let brightValue = 100;
             rows.style.backgroundColor = "black";
             rows.style.height = (sketchSize/gridSize) + "px";
             rows.style.width = (sketchSize/gridSize) + "px";
             rows.id = (i+1) + "_" + (j+1);
             cols.appendChild(rows);
             rows.addEventListener('mouseover', () => {
-                rows.style.backgroundColor = "blue";
+                if (onceTracker) {
+                    rows.style.backgroundColor = "rgb(" + getRandomInt(255) + "," + getRandomInt(255) + "," + getRandomInt(255) + ")";
+                    rows.style.filter = "brightness(" + brightValue +"%)";
+                    onceTracker = false;
+                } else {
+                    if (brightValue > 0){
+                        brightValue = brightValue - 10;
+                    }
+                    rows.style.filter = "brightness(" + brightValue +"%)";
+                    console.log(rows.style.filter);
+                }
             })
         }
     }
@@ -54,6 +67,11 @@ function removeGrid() {
         container.removeChild(container.firstChild);
     }
 }
+
+function getRandomInt(max) {
+    return Math.floor(Math.random()*max);
+}
+
 
 
 
